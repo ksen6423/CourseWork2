@@ -9,13 +9,10 @@ class APIAdapter:
         self.aeroplanes = None
 
     def get_aeroplanes(self, country: str) -> None:
-        #Headers с user-agent - обязательный параметр при запросе к nominatim.openstreetmap.
-        #Вы можете использовать любое название вместо test-app/1.0, например просто test-app.
         headers_nominatim = {
             'User-Agent': 'test-app/1.0',
         }
 
-        #Указываем параметры: в каком формате возвращать данные и максимальную длину списка стран в ответе.
         params_nominatim = {
             'country': country,
             'format': 'json',
@@ -26,10 +23,8 @@ class APIAdapter:
 
         data = response.json()
 
-        #Пример ответа от nominatim.openstreetmap можно посмотреть в задании курсовой.
         geo_coordinates = data[0].get('boundingbox')
 
-        #Параметры для фильтрации самолетов по их географическим координатам.
         params = {
             'lamin': geo_coordinates[0],
             'lamax': geo_coordinates[1],
@@ -39,8 +34,8 @@ class APIAdapter:
 
         response = get(url=self.opensky_url, params=params)
 
-        #Пример ответа от opensky-network можно посмотреть в задании курсовой.
         self.aeroplanes = response.json()
+
 
 api = APIAdapter()
 api.get_aeroplanes('Canada')
